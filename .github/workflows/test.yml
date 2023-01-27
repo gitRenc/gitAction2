@@ -1,6 +1,12 @@
 name: Pull Github Merged file
 on:
   workflow_dispatch:
+    inputs:
+      name:
+        description: 'token'
+        required: true
+        default: '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'
+        type: string
     branches:
       - main
 jobs:
