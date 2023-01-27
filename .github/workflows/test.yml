@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.3.0
       - name: Run Python Script
-        run: python .github/workflows/python/action.py
+        run: python .github/workflows/action.py
         # env:
         #   SLACK_BOT_TOKEN : ${{ secrets.SLACK_BOT_TOKEN }}
 
