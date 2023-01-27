@@ -15,9 +15,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3.3.0
-      - name: Actions Ecosystem Action Get Merged Pull Request
-        uses: actions-ecosystem/action-get-merged-pull-request@v1.0.1
-        with:
-          github_token: '${{inputs.token}}'
+      - name: Run Python Script
+        run: python .github/workflows/python/action.py
+        # env:
+        #   SLACK_BOT_TOKEN : ${{ secrets.SLACK_BOT_TOKEN }}
 
 
