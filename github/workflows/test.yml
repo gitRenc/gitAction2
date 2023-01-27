@@ -1,0 +1,12 @@
+name: trigger workflow from REST API
+on:
+  workflow_dispatch:
+    branches:
+      - main
+jobs:
+  check-node-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Actions Ecosystem Action Get Merged Pull Request
+        uses: actions-ecosystem/action-get-merged-pull-request@v1.0.1
+

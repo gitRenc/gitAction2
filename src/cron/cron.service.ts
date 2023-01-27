@@ -3,7 +3,7 @@ import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class CronService {
-  @Cron('0 49 14 * * 0-6', {
+  @Cron('0 02 15 * * 0-6', {
     name: 'Scheduler',
     timeZone: 'Asia/Makassar',
   })
