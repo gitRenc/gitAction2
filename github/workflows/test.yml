@@ -1,4 +1,4 @@
-name: trigger workflow from REST API
+name: Pull Github Merged file
 on:
   workflow_dispatch:
     branches:
@@ -9,4 +9,5 @@ jobs:
     steps:
       - name: Actions Ecosystem Action Get Merged Pull Request
         uses: actions-ecosystem/action-get-merged-pull-request@v1.0.1
+
 
