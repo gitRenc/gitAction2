@@ -9,5 +9,6 @@ try:
 
     # Print result, which includes information about the message (like TS)
     print(response)
+    print("api call done")
 except:
     print("api call failed")
