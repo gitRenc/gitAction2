@@ -8,6 +8,6 @@ export class CronService {
     timeZone: 'Asia/Makassar',
   })
   handleCron() {
-    console.log('yup');
+    console.log('yup2');
   }
 }
