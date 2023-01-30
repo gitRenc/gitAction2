@@ -1,21 +1,77 @@
 import os
 import requests
+import json
+import asyncio
+from requests.auth import HTTPBasicAuth
+from datetime import datetime, timedelta, timezone
 
 
-url = "https://api.github.com/search/issues?q=repo:gitRenc/gitAction2+is:pr+is:merged+merged:%3E=2023-01-27T06:59:50&sort=merged"
-params = {
-    "q": "repo:gitRenc/gitAction2+is:pr+is:merged+merged:%3E=2023-01-27T06:59:50",
-    "sort": "merged"
-}
-# q=repo:gitRenc/gitAction2+is:pr+is:merged+merged:%3E=2023-01-27T06:59:50
-# sort=merged
-try:
+async def getGithubMerged():
+    baseUrl = "https://api.github.com/search/issues"
+    owner = "gitRenc"
+    repo = "gitAction2"
+
+    # time in UTC
+    # 18.00 utc = 02.00 wita
+    startDate = datetime.now(timezone.utc) - timedelta(hours=24)
+    endDate = datetime.now(timezone.utc)
+
+    url = "{}?q=repo:{}/{}+is:pr+is:merged+merged:{}..{}".format(
+        baseUrl, owner, repo, startDate, endDate)
     response = requests.get(url)
-    # Call the conversations.list method using the WebClient
+    try:
+        json_data = json.loads(response.text)
+        titles = []
+        for item in json_data['items']:
+            titles.append(item["title"])
+        return titles
+    except:
+        return "github Api failed"
 
-    # Print result, which includes information about the message (like TS)
-    print(response)
-    print(response.json())
-    print("api call done")
-except:
-    print("api call failed")
+
+async def getJiraIssues():
+    #
+    # token link : https://id.atlassian.com/manage-profile/security/api-tokens
+    #
+    baseUrl = "https://richtesting.atlassian.net/rest/api/2/issue"
+    projectKey = "ARA"
+    token = "aad7AkZFyZcYTxThqmUX194D"
+    email = "richbytesting@gmail.com"
+    auth = HTTPBasicAuth(email, token)
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+    }
+
+    # query for jira request
+    params = {
+        "field": "status",
+        "project": projectKey
+    }
+
+    issues = []
+    titles = await getGithubMerged()
+    try:
+        if len(titles) > 0:
+            for items in titles:
+                url = "{}/{}".format(baseUrl, items)
+                response = requests.get(
+                    url, headers=headers, auth=auth, params=params)
+                if (response.status_code == 200):
+                    json_data = json.loads(response.text)
+                    issues.append({
+                        json_data["key"]: json_data["fields"]["status"]["name"]
+                    })
+        else:
+            return ("no issues")
+    except:
+        return ("Jira Api failed")
+
+    return (issues)
+
+
+async def main():
+    print(await getJiraIssues())
+
+
+asyncio.run(main())
