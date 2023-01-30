@@ -10,7 +10,7 @@ on:
     branches:
       - main
 jobs:
-  check-node-version:
+  post_issues_on_Teams:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
