@@ -53,12 +53,10 @@ async def getJiraIssues():
 
     issues = []
     titles = await getGithubMerged()
-
     try:
         if len(titles) > 0:
             for items in titles:
                 url = "{}/{}".format(baseUrl, items)
-
                 response = requests.get(
                     url, headers=headers, auth=auth, params=params)
                 if (response.status_code == 200):
